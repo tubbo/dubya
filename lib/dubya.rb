@@ -34,6 +34,7 @@ class Dubya < Sinatra::Base
     json flash
   end
 
+  # Test whether the wiki has been updated.
   def self.wiki_updated?
     update.run_command
     update.success?
