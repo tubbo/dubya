@@ -1,33 +1,27 @@
 require 'spec_helper'
 
 RSpec.describe Dubya do
+  let :wiki do
+    Wiki.new
+  end
+
+  let :mixlib do
+    wiki.send :command
+  end
+
   context 'when controlling the wiki files' do
     let :command do
-      "cd #{Dubya.wiki_path} && bundle exec rake update"
+      "cd #{app.send :wiki_path} && bundle exec rake update"
     end
 
     it 'computes the path to the public dir' do
-      expect(Dubya.wiki_path).to match(/public\Z/)
-      expect(Dir.exist?(Dubya.wiki_path)).to eq(true)
+      expect(wiki.path).to match(/public\Z/)
+      expect(wiki).to be_exist
     end
 
     it 'builds the command to execute' do
-      expect(Dubya.update).to be_a(Mixlib::ShellOut)
-      expect(Dubya.update.command).to eq(command)
-    end
-
-    it 'updates the wiki from the src dir' do
-      allow(Dubya.update).to receive(:run_command).and_return nil
-      allow(Dubya.update).to receive(:success?).and_return true
-
-      expect(Dubya).to be_wiki_updated
-    end
-
-    it 'returns false when the update command fails' do
-      allow(Dubya.update).to receive(:run_command).and_return nil
-      allow(Dubya.update).to receive(:success?).and_return false
-
-      expect(Dubya).not_to be_wiki_updated
+      expect(mixlib).to be_a(Mixlib::ShellOut)
+      expect(mixlib.command).to eq(command)
     end
   end
 
@@ -40,8 +34,14 @@ RSpec.describe Dubya do
       JSON.parse response.body
     end
 
+    before do
+      allow(mixlib).to receive(:run_command).and_return nil
+      allow(mixlib).to receive(:stdout).and_return 'stdout'
+      allow(mixlib).to receive(:sterr).and_return 'stderr'
+    end
+
     it 'updates the wiki when everything is ok' do
-      allow(Dubya).to receive(:wiki_updated?).and_return true
+      allow(mixlib).to receive(:success?).and_return true
       post '/wiki'
 
       expect(response).to be_ok
@@ -51,13 +51,14 @@ RSpec.describe Dubya do
     end
 
     it 'renders an http error if something goes wrong' do
-      allow(Dubya).to receive(:wiki_updated?).and_return false
+      allow(mixlib).to receive(:success?).and_return false
       post '/wiki'
 
       expect(response).not_to be_ok
       expect(response.status).to eq(422)
       expect(json.keys).to include('alert')
       expect(json['alert']).to eq('Error updating wiki.')
+      expect(json['errors']).to eq("stdout\n\nstderr")
     end
   end
 end

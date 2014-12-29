@@ -1,4 +1,7 @@
 require 'rake'
+require 'yard'
+require 'yard-tomdoc'
+require 'yard-sinatra'
 
 # Dubya's shell tasks help configure the server and update Vimwiki
 # repos.
@@ -43,11 +46,13 @@ end
 desc "Update the Vimwiki from its Git repo"
 task :update => %w(update:checkout update:compile)
 
-task :intro do
-  puts "You will now be guided through the first-time setup for Dubya"
+# Install documentation.
+YARD::Rake::YardocTask.new :docs do |t|
+  t.options = ['--readme=README.md', '--plugin=tomdoc']
+  t.files = ['config.ru', 'lib/dubya.rb']
 end
 
 # Update and install the latest Vimwiki before running the HTTP server.
-task :default => %w(intro setup update) do
+task :default => %w(setup update) do
   puts "Dubya has been installed! Run `./bin/dubya` to start the server."
 end

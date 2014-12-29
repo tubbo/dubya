@@ -1,2 +1,4 @@
 vendor
 bin
+doc
+.yardoc

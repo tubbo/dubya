@@ -1,6 +1,9 @@
+$LOAD_PATH << File.expand_path('../', __FILE__)
+
 require 'sinatra'
 require 'sinatra/json'
 require 'mixlib/shellout'
+require 'wiki'
 
 # = Dubya API
 #
@@ -11,49 +14,46 @@ require 'mixlib/shellout'
 class Dubya < Sinatra::Base
   set :static, false
 
-  # Public: Update the wiki.
+  # Public: Root dir of the app.
   #
-  # Examples
+  # Returns a fully-qualified path to the app on disk.
+  def self.root_path
+    File.expand_path '../', __FILE__
+  end
+
+  # Public: The object we use to represent the wiki on disk.
   #
-  #     POST /wiki { ... }
+  # Returns a Wiki object.
+  def self.wiki
+    @wiki ||= Wiki.new
+  end
+
+  # Public: Update the wiki by checking out its latest changes from
+  # GitHub and recompiling the HTML with Vim. Typically called by a
+  # Webhook when the repository has been pushed to. While this is a
+  # `POST` request, no parameters are necessary. It's merely a signal
+  # to trigger the checkout and recompilation process.
   #
   # Returns 200 if the update succeeded, 500 if failed.
   post '/wiki' do
-    flash = if Dubya.wiki_updated?
+    flash = if self.class.wiki.update
+      logger.info "Wiki updated successfully."
       {
         notice: 'The wiki has been updated.',
         status: 200
       }
     else
+      logger.warn "Couldn't update the wiki with an API call."
       {
         alert: 'Error updating wiki.',
         status: 422,
-        errors: Dubya.update.stdout
+        errors: self.class.wiki.command_output
       }
     end
 
+    logger.debug self.class.wiki.command_output
+
     status flash[:status]
     json flash
-  end
-
-  # Test whether the wiki has been updated.
-  def self.wiki_updated?
-    update.run_command
-    update.success?
-  end
-
-  # Internal: Update the wiki right now and return results.
-  #
-  # Returns `true` if the command(s) succeed, and `false` if any one of
-  # them fails.
-  def self.update
-    @update ||= Mixlib::ShellOut.new "cd #{wiki_path} && bundle exec rake update"
-  end
-
-  # Internal: The directory where the wiki is stored.
-  #
-  # Returns a fully-qualified path to the Wiki's repo on disk.
-  def self.wiki_path
-    File.expand_path '../public', __FILE__
   end
 end
