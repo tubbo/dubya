@@ -24,11 +24,19 @@ end
 
 namespace :update do
   task :checkout do
-    sh 'cd vendor/wiki && git pull --rebase origin master'
+    if File.exist? 'vendor/wiki/.git/HEAD'
+      sh 'cd vendor/wiki && git pull --rebase origin master'
+    else
+      fail "Error: Please run `rake setup` before attempting to checkout the repo."
+    end
   end
 
   task :compile do
-    sh 'vim +VimwikiAll2HTML && mv vendor/wiki/**/*.html public/'
+    if File.exist? 'vendor/wiki/.git/HEAD'
+      sh 'vim +VimwikiAll2HTML && mv vendor/wiki/**/*.html public/'
+    else
+      fail "Error: Please run `rake setup` before attempting to compile sources."
+    end
   end
 end
 

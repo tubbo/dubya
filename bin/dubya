@@ -1,3 +1,8 @@
 #!/bin/bash
+#
+# Update the Vimwiki and start the Rack server
 
+echo "Updating Vimwiki..." &&
+./bin/rake update &&
+echo "Starting the Dubya API..." &&
 ./bin/rackup -p 3000
