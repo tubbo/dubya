@@ -2,8 +2,10 @@ require 'rake'
 
 desc "Set up a Git repo that we'll pull from to update the wiki"
 task :setup do
-  unless File.exist? 'vendor/wiki/.git/HEAD'
-    puts "Enter the path on GitHub to your Vimwiki (without the .git):\s https://github.com/"
+  if File.exist? 'vendor/wiki/.git/HEAD'
+    puts "You already have a Vimwiki installed to ./vendor/wiki"
+  else
+    puts "Enter the path on GitHub to your Vimwiki (without the .git), https://github.com/..."
     repo = STDIN.gets.chomp
 
     sh 'rm vendor/wiki/.keep'
