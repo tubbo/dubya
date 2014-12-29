@@ -2,10 +2,12 @@ require 'sinatra'
 require 'sinatra/json'
 require 'mixlib/shellout'
 
+# = Dubya API
+#
 # A minimal API for updating the wiki on demand. This is the basic
 # controller of the entire application, facilitating GitHub Webhook
 # requests to the server. All it does is update the installed Wiki on
-# demand.
+# demand. The wiki is served using static HTML files.
 class Dubya < Sinatra::Base
   set :static, false
 
