@@ -11,7 +11,7 @@ RSpec.describe Dubya do
 
   context 'when controlling the wiki files' do
     let :command do
-      "cd #{app.send :wiki_path} && bundle exec rake update"
+      "cd #{wiki.path} && bundle exec rake update"
     end
 
     it 'computes the path to the public dir' do

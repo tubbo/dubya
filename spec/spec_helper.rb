@@ -9,7 +9,7 @@ class Dubya < Sinatra::Base
     include Rack::Test::Methods
 
     def app
-      Dubya
+      Dubya::API
     end
   end
 end

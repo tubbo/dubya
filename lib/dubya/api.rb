@@ -1,5 +1,5 @@
-require 'dubya'
 require 'sinatra'
+require 'sinatra/json'
 
 module Dubya
   # A minimal API for updating the wiki on demand. This is the basic
