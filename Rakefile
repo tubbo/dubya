@@ -6,7 +6,16 @@ require 'yard-sinatra'
 # Dubya's shell tasks help configure the server and update Vimwiki
 # repos.
 
-desc "Set up a Git repo that we'll pull from to update the wiki"
+def er(msg)
+  puts "Error: #{msg}"
+  exit 1
+end
+
+def wiki_cloned?
+  File.exist? 'vendor/wiki/.git/HEAD'
+end
+
+desc 'Configure the Vimwiki that we will be serving'
 task :setup do
   if File.exist? 'vendor/wiki/.git/HEAD'
     puts "You already have a Vimwiki installed to ./vendor/wiki"
@@ -19,7 +28,7 @@ task :setup do
   end
 end
 
-desc "Purge the vendor/wiki directory."
+desc 'Purge the vendor/wiki directory.'
 task :reset do
   sh 'rm -rf vendor/wiki'
   sh 'git checkout HEAD vendor/wiki/.keep'
@@ -32,25 +41,21 @@ task :clean do
 end
 
 namespace :update do
-  task :checkout do
-    if File.exist? 'vendor/wiki/.git/HEAD'
-      sh 'cd vendor/wiki && git pull --rebase origin master'
-    else
-      fail "Error: Please run `rake setup` before attempting to checkout the repo."
-    end
+  task :check do
+    er 'Please run `rake setup` before attempting to update the repo.' unless wiki_cloned?
+  end
+
+  task :pull do
+    sh 'cd vendor/wiki && git pull --rebase origin master'
   end
 
   task :compile do
-    if File.exist? 'vendor/wiki/.git/HEAD'
-      sh 'vim vendor/wiki/index.wiki +VimwikiAll2HTML +qall'
-    else
-      fail "Error: Please run `rake setup` before attempting to compile sources."
-    end
+    sh 'vim vendor/wiki/index.wiki +VimwikiAll2HTML +qall'
   end
 end
 
 desc "Update the Vimwiki from its Git repo"
-task :update => %w(update:checkout update:compile)
+task :update => %w(update:check clean update:pull update:compile)
 
 # Install documentation.
 YARD::Rake::YardocTask.new :docs do |t|

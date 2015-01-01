@@ -2,6 +2,7 @@ $LOAD_PATH << File.expand_path('../', __FILE__)
 
 require 'dubya/wiki'
 require 'dubya/api'
+require 'dubya/page'
 
 # Serves your Vimwiki as a Rack application.
 module Dubya
@@ -25,5 +26,9 @@ module Dubya
 
   def self.password
     ENV['DUBYA_PASSWORD'] || 'admin'
+  end
+
+  def self.cloned?
+    File.exist? 'vendor/wiki/.git/HEAD'
   end
 end

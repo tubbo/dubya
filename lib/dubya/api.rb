@@ -7,6 +7,9 @@ module Dubya
   # requests to the server. All it does is update the installed Wiki on
   # demand. The wiki is served using static HTML files.
   class API < Sinatra::Base
+    set :views, settings.root + '/templates'
+    set :static, false
+
     # Public: Update the wiki by checking out its latest changes from
     # GitHub and recompiling the HTML with Vim. Typically called by a
     # Webhook when the repository has been pushed to. While this is a
@@ -34,6 +37,21 @@ module Dubya
 
       status flash[:status]
       json flash
+    end
+
+    # Public: Edit a wiki page.
+    put '/wiki/:page' do
+      page = Dubya.wiki.find params[:page]
+      raise Sinatra::NotFound unless page.present?
+      page.update params[:content]
+      redirect to("/#{page.name}.html")
+    end
+
+    # Public: Show the edit form for a wiki page.
+    get '/wiki/:page' do
+      page = Dubya.wiki.find params[:page]
+      raise Sinatra::NotFound unless page.present?
+      erb :form, locals: { page: page }
     end
   end
 end

@@ -7,7 +7,6 @@
   <link type="text/css" rel="stylesheet" href="%root_path%assets/css/normalize.css" />
   <link type="text/css" rel="stylesheet" href="%root_path%assets/css/foundation.min.css" />
 
-
   <title>%title% - wiki</title>
 </head>
 <body>
@@ -45,6 +44,7 @@
   </section>
 
   <footer>
+    <div id="dialog" class="reveal-modal" data-reveal></div>
   </footer>
 
   <script type="text/javascript" src="%root_path%assets/js/jquery-2.1.3.js"></script>

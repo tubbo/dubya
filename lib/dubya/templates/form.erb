@@ -1,0 +1,20 @@
+<form id="edit_page" method="PUT" action="/wiki/<%= page.name %>">
+  <fieldset>
+    <legend>Editing <%= page.name %></legend>
+
+    <div class="row">
+      <div class="large 12-columns">
+        <textarea id="edit_page_contents" cols="100" rows="75">
+          <%= page.contents %>
+        </textarea>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="large 8-columns">&nbsp;</div>
+      <div class="large 4-columns">
+        <input type="submit" value="Save" class="button">
+      </div>
+    </div>
+  </fieldset>
+</form>
