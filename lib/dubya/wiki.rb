@@ -1,9 +1,20 @@
 require 'mixlib/shellout'
+require 'dubya/wiki/page'
 
 module Dubya
   # A model object representing the Git-tracked Vimwiki on disk. Also
   # used to run update and recompile commands against it.
   class Wiki
+    # Public: A short redirection to Dubya::Wiki::Page
+    def find(page)
+      Page.find(page)
+    end
+
+    # Public: Commit everything with this message.
+    def commit(message)
+      system %(cd #{path} && git commit -am "#{message}" && git push)
+    end
+
     # Public: Update this repo.
     #
     # Returns `true` if updated.
