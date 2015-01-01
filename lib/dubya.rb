@@ -18,4 +18,12 @@ module Dubya
   def self.wiki
     @wiki ||= Wiki.new
   end
+
+  def self.username
+    ENV['DUBYA_USERNAME'] || 'admin'
+  end
+
+  def self.password
+    ENV['DUBYA_PASSWORD'] || 'admin'
+  end
 end
