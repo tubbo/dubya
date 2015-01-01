@@ -36,7 +36,7 @@ namespace :update do
 
   task :compile do
     if File.exist? 'vendor/wiki/.git/HEAD'
-      sh 'vim +VimwikiAll2HTML && mv vendor/wiki/**/*.html public/'
+      sh 'vim vendor/wiki/index.wiki +VimwikiAll2HTML +qall'
     else
       fail "Error: Please run `rake setup` before attempting to compile sources."
     end
