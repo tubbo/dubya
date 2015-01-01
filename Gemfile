@@ -6,6 +6,7 @@ gem 'rack-contrib'
 gem 'sinatra'
 gem 'sinatra-contrib'
 gem 'mixlib-shellout'
+#gem 'thin'
 
 group :development do
   gem 'yard'

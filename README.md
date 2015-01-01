@@ -1,7 +1,8 @@
 # Dubya
 
 A Rack server for your GitHub-hosted Vimwiki. It runs `vim` to recompile
-your installed Vimwiki after new changes are pushed to GitHub.
+your installed Vimwiki after new changes are pushed to GitHub. This
+software powers http://w.psychedeli.ca/.
 
 ## Installation
 
