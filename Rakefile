@@ -20,9 +20,15 @@ task :setup do
 end
 
 desc "Purge the vendor/wiki directory."
-task :clean do
+task :reset do
   sh 'rm -rf vendor/wiki'
   sh 'git checkout HEAD vendor/wiki/.keep'
+end
+
+desc "Purge the public/ directory of all HTML files"
+task :clean do
+  sh 'rm -rf public/'
+  sh 'git checkout HEAD public/'
 end
 
 namespace :update do
