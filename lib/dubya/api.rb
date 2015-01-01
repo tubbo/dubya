@@ -7,8 +7,6 @@ module Dubya
   # requests to the server. All it does is update the installed Wiki on
   # demand. The wiki is served using static HTML files.
   class API < Sinatra::Base
-    set :static, false
-
     # Public: Update the wiki by checking out its latest changes from
     # GitHub and recompiling the HTML with Vim. Typically called by a
     # Webhook when the repository has been pushed to. While this is a
