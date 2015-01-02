@@ -1,3 +1,5 @@
+$LOAD_PATH << File.expand_path('../lib', __FILE__)
+
 require 'rake'
 require 'yard'
 require 'yard-tomdoc'
