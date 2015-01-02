@@ -7,8 +7,15 @@ module Dubya
   # requests to the server. All it does is update the installed Wiki on
   # demand. The wiki is served using static HTML files.
   class API < Sinatra::Base
-    set :views, settings.root + '/templates'
-    set :static, false
+    set :views, "#{settings.root}/templates"
+
+    get '/' do
+      "Set up your wiki by running `rake setup`"
+    end
+
+    not_found do
+      "File not found"
+    end
 
     # Public: Update the wiki by checking out its latest changes from
     # GitHub and recompiling the HTML with Vim. Typically called by a
@@ -42,7 +49,7 @@ module Dubya
     # Public: Edit a wiki page.
     put '/wiki/:page' do
       page = Dubya.wiki.find params[:page]
-      raise Sinatra::NotFound unless page.present?
+      raise Sinatra::NotFound if page.nil?
       page.update params[:content]
       redirect to("/#{page.name}.html")
     end
@@ -50,8 +57,14 @@ module Dubya
     # Public: Show the edit form for a wiki page.
     get '/wiki/:page' do
       page = Dubya.wiki.find params[:page]
-      raise Sinatra::NotFound unless page.present?
+      raise Sinatra::NotFound if page.nil?
       erb :form, locals: { page: page }
+    end
+
+    private
+
+    def logger
+      Dubya.logger
     end
   end
 end

@@ -44,11 +44,19 @@
   </section>
 
   <footer>
+    <div class="right" style="text-align:right">
+      <a href="#" id="edit-button" class="button">Edit This Page</a>
+    </div>
     <div id="dialog" class="reveal-modal" data-reveal></div>
   </footer>
 
   <script type="text/javascript" src="%root_path%assets/js/jquery-2.1.3.js"></script>
   <script type="text/javascript" src="%root_path%assets/js/foundation.min.js"></script>
   <script>$(function() { $(document).foundation(); });</script>
+  <script>
+    var pageName = (window.location.pathname == '/') ? 'index' : window.location.pathname;
+        editURL = '/wiki/'+pageName.split('.html').join('');
+    $('#edit-button').attr('href', editURL);
+  </script>
 </body>
 </html>

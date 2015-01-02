@@ -5,16 +5,22 @@ module Dubya
       attr_accessor :name
 
       def self.path_to(name)
-        File.join Dubya.wiki.path, name
+        path = File.join Dubya.wiki.path, "#{name}.wiki"
+        path
       end
 
       def self.exists?(name)
-        File.exist? path_to(name)
+        path = path_to name
+        File.exist?(path) || File.symlink?(path)
       end
 
       def self.find(name)
-        return unless exists? name
-        new(name)
+        #if exists? name
+          new name
+        #else
+        #  Dubya.logger.error "Page '#{name}' not found in '#{path_to(name)}'"
+        #  nil
+        #end
       end
 
       def initialize(name)
