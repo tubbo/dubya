@@ -6,5 +6,5 @@ require 'dubya'
 #use Rack::Auth::Basic, "wiki" do |username, password|
 #  username == Dubya.username && password == Dubya.password
 #end
-use Rack::TryStatic, urls: ['/'], root: 'public', try: ['.html', 'index.html']
+use Rack::Static, urls: %w(/assets), root: 'public'
 run Dubya::API

@@ -43,9 +43,12 @@
     </div>
   </section>
 
-  <footer>
-    <div class="right" style="text-align:right">
-      <a href="#" id="edit-button" class="button">Edit This Page</a>
+  <footer class="row">
+    <div class="large-8 columns">&nbsp;</div>
+    <div class="large-4 columns">
+      <div class="right" style="text-align:right">
+        <a href="#" id="edit-button" class="button" data-reveal-id="dialog">Edit</a>
+      </div>
     </div>
     <div id="dialog" class="reveal-modal" data-reveal></div>
   </footer>
@@ -57,6 +60,7 @@
     var pageName = (window.location.pathname == '/') ? 'index' : window.location.pathname;
         editURL = '/wiki/'+pageName.split('.html').join('');
     $('#edit-button').attr('href', editURL);
+    $('#edit-button').attr('data-reveal-ajax', editURL);
   </script>
 </body>
 </html>

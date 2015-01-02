@@ -41,12 +41,13 @@ module Dubya
 
       def save
         Dubya.wiki.commit "Updated '#{name}'"
+        Dubya.wiki.compile!
       end
 
       private
 
-      def write
-        File.write path, with_new_contents
+      def write(new_contents)
+        File.write path, new_contents
       end
     end
   end

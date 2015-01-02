@@ -1,10 +1,10 @@
-<form id="edit_page" method="PUT" action="/wiki/<%= page.name %>">
+<form id="edit_page" method="POST" action="/wiki/<%= page.name %>">
   <fieldset>
     <legend>Editing <%= page.name %></legend>
 
     <div class="row">
       <div class="large 12-columns">
-        <textarea id="edit_page_contents" rows="50" cols="100"><%= page.contents %></textarea>
+        <textarea id="edit_page_contents" name="content" style="font-size: 14px" rows="15" cols="100"><%= page.contents %></textarea>
       </div>
     </div>
 

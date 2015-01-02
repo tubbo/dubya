@@ -5,6 +5,10 @@ module Dubya
   # A model object representing the Git-tracked Vimwiki on disk. Also
   # used to run update and recompile commands against it.
   class Wiki
+    def compile!
+      system 'vim vendor/wiki/index.wiki +VimwikiAll2HTML +qall'
+    end
+
     # Public: A short redirection to Dubya::Wiki::Page
     def find(page)
       Page.find(page)

@@ -8,13 +8,15 @@ module Dubya
   # demand. The wiki is served using static HTML files.
   class API < Sinatra::Base
     set :views, "#{settings.root}/templates"
-
-    get '/' do
-      "Set up your wiki by running `rake setup`"
-    end
+    set :public_folder, File.dirname(__FILE__) + '/public'
+    set :static_cache_control, [:public, :max_age => 300]
 
     not_found do
-      "File not found"
+      "Resource not found"
+    end
+
+    get '/' do
+      File.read File.join('public', 'index.html')
     end
 
     # Public: Update the wiki by checking out its latest changes from
@@ -47,11 +49,11 @@ module Dubya
     end
 
     # Public: Edit a wiki page.
-    put '/wiki/:page' do
+    post '/wiki/:page' do
       page = Dubya.wiki.find params[:page]
       raise Sinatra::NotFound if page.nil?
       page.update params[:content]
-      redirect to("/#{page.name}.html")
+      redirect back
     end
 
     # Public: Show the edit form for a wiki page.

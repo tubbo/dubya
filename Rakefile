@@ -2,6 +2,7 @@ require 'rake'
 require 'yard'
 require 'yard-tomdoc'
 require 'yard-sinatra'
+require 'dubya'
 
 # Dubya's shell tasks help configure the server and update Vimwiki
 # repos.
@@ -50,11 +51,11 @@ namespace :update do
   end
 
   task :compile do
-    sh 'vim vendor/wiki/index.wiki +VimwikiAll2HTML +qall'
+    Dubya.wiki.compile!
   end
 end
 
-desc "Update the Vimwiki from its Git repo"
+desc "Sync the Vimwiki from its Git repo and recompile HTML"
 task :update => %w(update:check clean update:pull update:compile)
 
 # Install documentation.
