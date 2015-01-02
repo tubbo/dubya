@@ -39,6 +39,7 @@ module Dubya
         write(with_new_contents) && save
       end
 
+      # Commit this page and recompile HTML.
       def save
         Dubya.wiki.commit "Updated '#{name}'"
         Dubya.wiki.compile!

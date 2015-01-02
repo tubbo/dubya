@@ -6,6 +6,7 @@ module Dubya
   # used to run update and recompile commands against it.
   class Wiki
     def compile!
+      Dubya.logger.info "Compiling Wiki files to HTML..."
       system 'vim vendor/wiki/index.wiki +VimwikiAll2HTML +qall'
     end
 
@@ -16,6 +17,7 @@ module Dubya
 
     # Public: Commit everything with this message.
     def commit(message)
+      Dubya.logger.info "Updating Git repository..."
       system %(cd #{path} && git commit -am "#{message}" && git push)
     end
 
