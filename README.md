@@ -36,6 +36,11 @@ from GitHub. As long as your HTTP server is running, you'll always be
 able to access your wiki's contents. To update your repo, just send the
 request `POST /wiki` to your Vimwiki installation.
 
+You can also edit your files from the web. Click the big "Edit" button
+at the bottom of each page, type in your text, and it will be saved to
+Git and subsequently pushed to GitHub. The file will also recompile
+itself so you can see changes immediately when the response is done loading.
+
 ## Development
 
 All contributions must include tests and be made within a pull request.
