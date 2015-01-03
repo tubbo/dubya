@@ -4,3 +4,4 @@ doc
 .yardoc
 public
 tmp
+.DS_Store
